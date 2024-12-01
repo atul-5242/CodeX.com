@@ -7,9 +7,17 @@ import WebSocket,{WebSocketServer} from "ws";
 import { SocketManager } from "./SocketManager/SocketMange";
 import ChatRoute from "./routes/chatRoutes";
 
-export const wss=new WebSocketServer({port:8080});
-const socketManager = new SocketManager(8080); // WebSocket server on port 8080
+export const socketManager = new SocketManager(8082); // WebSocket server on port 8080
 const app = express();
+
+
+// const socket = new WebSocket('ws://localhost:3000', {            
+//     headers: {                                                   
+//         'Authorization': `Bearer ${storedJwtToken}`              ------CLIENT SIDE CODE Written Here for future refrence---------
+//     }                                                            
+// });                                                             
+
+
 
 app.use(express.json());// for parsing json
 app.use(cors(
@@ -21,11 +29,11 @@ app.use(cors(
 
 app.use("/api/auth",authRoutes);
 app.use("/api/chat",ChatRoute);
-app.use(userMiddleware as any);
+// app.use(userMiddleware as any);
 
 
-mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/ChatApp");
+mongoose.connect(process.env.MONGO_URL || "mongodb+srv://atulfzdlko2001:CMeguoisxp33vKpJ@cluster0.w7u2ewk.mongodb.net/ChatApp");
 
-app.listen(process.env.PORT || 8080, () => {
-    console.log("Server is running on port 8080");
+app.listen(process.env.PORT || 3002, () => {
+    console.log("Express Server is running on port 3002");
 });

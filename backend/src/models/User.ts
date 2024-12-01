@@ -1,25 +1,36 @@
-// import {Websocket} from "ws";
-
-import{ Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const UserSchema = new Schema({
-    username:{
-        type:String,
-        unique:true,
+    username: {
+        type: String,
+        unique: true,
+        required: true,
     },
-    password:{
-        type:String,
-        require:true,
+    password: {
+        type: String,
+        required: true,
     },
-    name:{
-        type:String,
-        require:true,
+    name: {
+        type: String,
+        required: true,
     },
-    email:{
-        type:String,
-        require,
-        unique:true
+    email: {
+        type: String,
+        unique: true,
+        required: true,
     },
-})
+    groupIds: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Group",
+        },
+    ],
+    p2pChatIds: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "PersonalChat",
+        },
+    ],
+});
 
-export const UserModel = model("User",UserSchema); 
+export const User = model("User", UserSchema);

@@ -1,12 +1,31 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
-// Define message schema
-const messageSchema = new mongoose.Schema({
-    from: { type: String, required: true },
-    to: { type: String },
-    message: { type: String, required: true },
-    type: { type: String, enum: ['direct', 'group'], required: true },
-    groupId: { type: String }, // Optional, for group messages
-}, { timestamps: true });
+const MessageSchema = new Schema(
+    {
+        from: {
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        to: {
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+        },
+        groupId: {
+            type: mongoose.Types.ObjectId,
+            ref: "Group",
+        },
+        message: {
+            type: String,
+            required: true,
+        },
+        type: {
+            type: String,
+            enum: ["direct", "group"],
+            required: true,
+        },
+    },
+    { timestamps: true }
+);
 
-export const Message = mongoose.model("Message", messageSchema);
+export const Message = model("Message", MessageSchema);

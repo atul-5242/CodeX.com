@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { UserModel } from "../../models/User";
+import { User } from "../../models/User";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 
@@ -50,7 +50,7 @@ export const signIn = async (req:Request,res:Response) =>{
             });
         }
 
-        const existingUser = await UserModel.findOne({
+        const existingUser = await User.findOne({
             $or: [{ username_ }, { email_ }],
         });
         
@@ -62,7 +62,7 @@ export const signIn = async (req:Request,res:Response) =>{
             
         hashedPassword = await bcrypt.hash(password_,10);
             
-        const dbUser=await UserModel.create({
+        const dbUser=await User.create({
             username:username_,
             password:hashedPassword,
             name:name_,

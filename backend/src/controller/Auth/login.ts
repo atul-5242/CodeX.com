@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { UserModel } from "../../models/User";
+import { User } from "../../models/User";
 import  Jwt  from "jsonwebtoken";
 import bcrpyt from "bcrypt";
 export const login = async (req:Request,res:Response) =>{
@@ -8,7 +8,7 @@ export const login = async (req:Request,res:Response) =>{
 
     try {
         
-        const userData=await UserModel.findOne({username})
+        const userData=await User.findOne({username:username})
         
         if(!userData) return res.json({message:"User not exisit"});
 
@@ -18,7 +18,7 @@ export const login = async (req:Request,res:Response) =>{
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        const JWT_SECRET = process.env.JWT_SECRET;
+        const JWT_SECRET = "ChatAppAtul";
         if (!JWT_SECRET) {
           return res.status(500).json({ message: "JWT_SECRET is missing" });
         }
