@@ -46,7 +46,7 @@ export const signIn = async (req:Request,res:Response) =>{
         }
         if (password_ !== confirmPassword_) {
             return res.status(400).json({
-              message: "Passwords do not match.",
+              message: "Passwords do not match. ****************"+password_ +"and"+ confirmPassword_,
             });
         }
 
