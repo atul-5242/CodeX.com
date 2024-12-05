@@ -14,11 +14,13 @@ export class SocketManager {
 
     constructor(port: number) {
         this.wss = new WebSocketServer({ port });
+        console.log(`WebSocket server is running on port ${port}`);
         this.wss.on("connection", this.onConnection.bind(this)); // Bind connection handler
     }
 
     private authenticateSocket(socket: WebSocket, req: any): ObjectId | null {
-        const token = req.headers['authorization'];
+        const url= new URL(req.url || "",`http://${req.headers.host}`);  //i have to understand this line .
+        const token = url.searchParams.get("token");
         console.log("The Req.headers is here",req.headers);
         console.log("The Token is here",token);
         const JWT_SECRET = "ChatAppAtul";
@@ -82,6 +84,8 @@ export class SocketManager {
                 break;
         }
     }
+
+
 
     // Handle direct messages between users
     private handleDirectMessage(message: any, socket: WebSocket) {
