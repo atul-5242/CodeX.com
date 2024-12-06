@@ -12,29 +12,30 @@ const Home = () => {
     window.location.reload();
   }
 
-  function ChatHandler(){
-    window.location.href="/p2pchat";
-  }
 
-  useEffect(()=>{
-    const ws=new WebSocket("ws://localhost:8082?token="+token);
+  // useEffect(()=>{
+  //   const ws=new WebSocket("ws://localhost:8082?token="+token);
 
-    ws.onmessage=(event)=>{
-      setMessage(m=>[...m,event.data]);
-    }
+  //   ws.onmessage=(event)=>{
+  //     setMessage(m=>[...m,event.data]);
+  //   }
 
 
-    ws.onopen=()=>{
-      console.log("connected");
-      ws.send(JSON.stringify({
-        type:"direct",
-        user:"userId"
-      }));
-    }
-    return ()=>{
-      ws.close();
-    }
-  },[user])
+  //   ws.onopen=()=>{
+  //     console.log("connected");
+  //     ws.send(JSON.stringify({
+  //       type:"direct",
+  //       user:"userId"
+  //     }));
+  //   }
+  //   return ()=>{
+  //     ws.close();
+  //   }
+  // },[user])
+
+  useEffect(()=>{(async()=>{
+    const AlluserData=await getAll();
+  })()},[])
 
   return (
     <div>
@@ -66,7 +67,7 @@ const Home = () => {
 
                     {
                       user?<Link to={"/chat"} className='bg-white text-black text-xl font-bold py-2 px-4 rounded-lg'>
-                        <button onClick={ChatHandler}>Chat</button>
+                        <button>Chat</button>
                       </Link>:null
                     }
 

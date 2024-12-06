@@ -6,6 +6,7 @@ import { userMiddleware } from "./middleware/auth";
 import WebSocket,{WebSocketServer} from "ws";
 import { SocketManager } from "./SocketManager/SocketMange";
 import ChatRoute from "./routes/chatRoutes";
+import UserRoute from "./routes/UserRoute/User_Route";
 
 export const socketManager = new SocketManager(8082); // WebSocket server on port 8080
 const app = express();
@@ -29,6 +30,7 @@ app.use(cors(
 
 app.use("/api/auth",authRoutes);
 app.use("/api/chat",ChatRoute);
+app.use("/api/user",UserRoute);
 // app.use(userMiddleware as any);
 
 

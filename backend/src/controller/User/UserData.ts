@@ -4,7 +4,7 @@ import { Request,Response } from "express";
 export const getAllUser = async (req:Request,res:Response):Promise<any> =>{
 
     try {
-        const userData=await User.find({});
+        const userData=await User.find({}).populate("name");
         if(!userData) 
             return res.status(404).json({
                 message:"No user data found"

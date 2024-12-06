@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getAllUserData } from '../../Services/Operations/UserSpecific/UserCall';
+import { useSelector } from 'react-redux';
 
 const ChatPage = () => {
 
-    const messages = [
-        {
+      const messages = [
+          {
             id: 1,
             text: "Hey there! How's it going?",
             sender: "me"
@@ -54,7 +56,65 @@ const ChatPage = () => {
             sender: "other"
         },
     ];
+
+
+    const [userTitle,setUserTitle]=useState("");
+    const [current_Selected_User,set_current_Selected_User]=useState({});
+    // const [userAvatar,setUserAvatar]=useState("");
+    // const [userName,setUserName]=useState("");
+    // const [userEmail,setUserEmail]=useState("");
+    // const [userGroup,setUserGroup]=useState([]);
     
+    const UserDataHandler=(id)=>{
+        console.log("The user id is here >>>>>>>>>>>>>>>>>",id);
+        setUserTitle(alluser.find(user=>user._id===id)?.name);
+        const user=alluser.find(user=>user._id===id);
+        if(!user){    
+            return;
+        }
+        set_current_Selected_User(user);
+    }
+    
+      
+    const [alluser,setAllUser]=useState([]); 
+
+    useEffect(()=>{
+
+        const allUser=async()=>{
+            try {
+                const response=await getAllUserData()();
+                console.log("response",response);
+                setAllUser(response?.data?.userData);
+            } catch (error) {
+                console.log("Error",error);
+            }
+        }
+        allUser();
+    },[])
+
+    const {token}=useSelector((state)=>state.auth);
+
+    // WebSocket Connection
+    useEffect(()=>{
+
+        const ws=new WebSocket("ws://localhost:8082?token="+token);
+
+        ws.onmessage=(event)=>{
+            // setMessage(m=>[...m,event.data]);
+            console.log("message",event.data);
+        }
+
+        ws.onopen=()=>{
+            console.log("connected");
+            ws.send(JSON.stringify({
+            type:"direct",
+            user:current_Selected_User._id
+            }));
+        }
+        return ()=>{
+            ws.close();
+        };
+        },[]);
   return (
     <div>
 
@@ -66,58 +126,36 @@ const ChatPage = () => {
         What's Up
       </div>
         <div className='flex flex-col gap-1 overflow-y-auto h-[30rem]'>
-            <button className=' bg-black text-white w-full p-3'>
-                <div className='flex  gap-5 items-center'> 
-                    <div className='bg-white rounded-full w-10 h-10'></div>
-                    <div>Atul Maurya</div>
-                </div>
-            </button>
-            <button className=' bg-black text-white w-full p-3'>
-                <div className='flex  gap-5 items-center'> 
-                    <div className='bg-white rounded-full w-10 h-10'></div>
-                    <div>Atul Maurya</div>
-                </div>
-            </button>
-            <button className=' bg-black text-white w-full p-3'>
-                <div className='flex  gap-5 items-center'> 
-                    <div className='bg-white rounded-full w-10 h-10'></div>
-                    <div>Atul Maurya</div>
-                </div>
-            </button>   
-            <button className=' bg-black text-white w-full p-3'>
-                <div className='flex  gap-5 items-center'> 
-                    <div className='bg-white rounded-full w-10 h-10'></div>
-                    <div>Atul Maurya</div>
-                </div>
-            </button>
-            <button className=' bg-black text-white w-full p-3'>
-                <div className='flex  gap-5 items-center'> 
-                    <div className='bg-white rounded-full w-10 h-10'></div>
-                    <div>Atul Maurya</div>
-                </div>
-            </button>
-            <button className=' bg-black text-white w-full p-3'>
-                <div className='flex  gap-5 items-center'> 
-                    <div className='bg-white rounded-full w-10 h-10'></div>
-                    <div>Atul Maurya</div>
-                </div>
-            </button>
-           
-            
+            {   //@ts-ignore
+                alluser.map((item,index)=>{
+                    return <button className=' bg-black text-white w-full p-3' key={item._id} onClick={()=>{
+                        
+                        UserDataHandler(item._id)
+                        
+                        }}>
+                        <div className='flex  gap-5 items-center'> 
+                            <div className='bg-white rounded-full w-10 h-10' style={{backgroundColor:item.avatarColor}}></div>
+                            <div>{item.name}</div>
+                        </div>
+                    </button>
+                })
+            }
         </div>
         </div>
 
         {/* Right Chat Area */}
         <div className='bg-gradient-to-t py-10 w-[45rem] px-10 rounded-tr-2xl rounded-br-2xl' style={{ backgroundImage: "url('https://e0.pxfuel.com/wallpapers/540/950/desktop-wallpaper-pastel-pinterest-whatsapp-anime-quote-girly-cartoon.jpg')" }}>
         <div className='text-center justify-start px-5 shadow-2xl border shadow-white items-center flex w-full bg-green-950 font-bold rounded-2xl text-white h-[3rem]'>
-        Atul Maurya
+        {
+            userTitle?userTitle:"Hi i am Here"
+        }
       </div>
       <div className='flex flex-col'>
         <div className='h-96 flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-green-900 scrollbar-track-gray-300 p-4'>
             
            {
                 messages.map((message,index)=>{
-                    return <div className={`flex ${message.sender==="me"?"justify-end":"justify-start"}`}>
+                    return <div className={`flex ${message.sender==="me"?"justify-end":"justify-start"}`} key={message.id}>
                     <div className={`mb-2 ${message.sender==="me"?"bg-green-400":"bg-white"} w-fit rounded-lg p-2`} key={index}>{message.text}</div>
                     </div>
                 })

@@ -11,9 +11,9 @@ import { Provider } from 'react-redux'
 createRoot(document.getElementById('root')!).render(
   <Provider store={Store}>
     <BrowserRouter>
-    <StrictMode> 
+   
       <App />
-    </StrictMode>
+   
     </BrowserRouter>
   </Provider>
 )

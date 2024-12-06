@@ -18,24 +18,25 @@ export class SocketManager {
         this.wss.on("connection", this.onConnection.bind(this)); // Bind connection handler
     }
 
-    private authenticateSocket(socket: WebSocket, req: any): ObjectId | null {
+    private authenticateSocket(socket: WebSocket, req: any): any | null {
         const url= new URL(req.url || "",`http://${req.headers.host}`);  //i have to understand this line .
         const token = url.searchParams.get("token");
-        console.log("The Req.headers is here",req.headers);
-        console.log("The Token is here",token);
+        // console.log("The Req.headers is here",req.headers);
+        // console.log("The Token is here",token);
         const JWT_SECRET = "ChatAppAtul";
 
-        if (!token || !token.startsWith('Bearer ')) {
+        if (!token) {
             socket.close();
             return null;
         }
 
-        const decoded = this.verifyToken(token.split(' ')[1], JWT_SECRET);
+        const decoded = this.verifyToken(token, JWT_SECRET);
+        // console.log("Decoded",decoded);
         if (!decoded) {
             socket.close();
             return null;
         }
-        return decoded.userId; 
+        return decoded; 
     }
 
 
@@ -53,18 +54,21 @@ export class SocketManager {
     private onConnection(socket: WebSocket, req: IncomingMessage) {
         // console.log("Incomming message ",req)
         // User Authentication
-        const userId = this.authenticateSocket(socket,req);
+        const decodeData = this.authenticateSocket(socket,req);
         // const userId = "674b5ed7a7a30ead2c8eff55"
-        if (!userId){
+        if (!decodeData){
             console.log("Problem in Authentication");
             return;  
         } 
             
         //Adding Socket
-        if(userId){
+        if(decodeData){
 
-            console.log("New connection established");
-            this.addSocket(socket, userId);
+            console.log("New connection established"+decodeData.username);
+            // Avoid adding duplicate sockets
+            if (!this.allSockets.some((user) => user.userId === decodeData.id)) {
+                this.addSocket(socket, decodeData.id);
+            }
             socket.on("message", (data) => this.onMessage(socket, data)); // Handle incoming messages
             socket.on("close", () => this.onClose(socket)); // Handle socket closure    
         }
