@@ -24,7 +24,7 @@ export const login = async (req:Request,res:Response) =>{
         }
     
         
-        const token=Jwt.sign({id:userData.id,username:userData.username},JWT_SECRET,{
+        const token=Jwt.sign({id:userData._id,username:userData.username},JWT_SECRET,{
             expiresIn:"7d",
         });
 

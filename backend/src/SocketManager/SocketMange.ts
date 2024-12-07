@@ -95,7 +95,7 @@ export class SocketManager {
     private handleDirectMessage(message: any, socket: WebSocket) {
         const recipientSocket = this.allSockets.find((user) => user.userId === message.to);
         if (recipientSocket) {
-            recipientSocket.socket.send(JSON.stringify({ from: message.from, message: message.message }));
+            recipientSocket.socket.send(JSON.stringify({ from: message.from, message: message.message,to:message.to,type:message.type }));
         }
     }
 
@@ -115,5 +115,11 @@ export class SocketManager {
     public addSocket(socket: WebSocket, userId :any) {
         this.allSockets.push({ socket, userId });
     }
+
+
+
+    // Important
+    // etl pipeline
+    // confiui
 }
     

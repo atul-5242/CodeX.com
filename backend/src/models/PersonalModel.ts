@@ -9,7 +9,7 @@ const PersonalChatSchema = new Schema({
                 required: true,
             },
         },
-    ],
+    ], 
     messages: [
         {
             sender: {
