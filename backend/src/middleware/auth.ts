@@ -6,7 +6,7 @@ type headerType = string | undefined;
 export const userMiddleware =(req:Request,res:Response,next:NextFunction):void =>{
 
     const header:headerType = req.headers["authorization"];
-    const JWT_SECRET:string |undefined=process.env.JWT_SECRET;
+    const JWT_SECRET:string |undefined="ChatAppAtul";
     // const token = jwt.verify(header,JWT_SECRET);
 
     // Cheking here header is present or not:
@@ -25,12 +25,11 @@ export const userMiddleware =(req:Request,res:Response,next:NextFunction):void =
         const decode=jwt.verify(token,JWT_SECRET);
         (req as any).user=decode;
 
-        next();
         res.json({
             message:"Token IS Verified.",
             token:token,
         })
-        return ;
+        next();
     } catch (e) {
         res.status(401).json({
             message:"Error while verifying token through Jwt",

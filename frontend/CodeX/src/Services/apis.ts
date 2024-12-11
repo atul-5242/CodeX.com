@@ -11,3 +11,8 @@ export const UserEndPoints = {
     GET_ALL_USER_API:BASE_URL+"/user/getAllUser",
     GET_USER_BY_ID_API:BASE_URL+"/user/getUserById",
 }
+
+export const ChatEndPoints = {
+   GET_CHAT_BY_ID_API:BASE_URL+"/chat/getChatById",
+   CREATE_CHAT_BY_ID_API:BASE_URL+"/chat/sendMessage",
+}

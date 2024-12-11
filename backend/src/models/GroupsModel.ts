@@ -22,34 +22,8 @@ const GroupSchema = new Schema({
     ],
     messages: [
         {
-            senders: [
-                {
-                    userId: {
-                        type: mongoose.Types.ObjectId,
-                        ref: "User",
-                        required: true,
-                    },
-                    messageIds: [
-                        {
-                            type: mongoose.Types.ObjectId,
-                            ref: "Message",
-                        },
-                    ],
-                },
-            ],
-            receiver: {
-                userId: {
-                    type: mongoose.Types.ObjectId,
-                    ref: "User",
-                    required: true,
-                },
-                messageIds: [
-                    {
-                        type: mongoose.Types.ObjectId,
-                        ref: "Message",
-                    },
-                ],
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Message",
         },
     ],
 });

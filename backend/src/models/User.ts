@@ -19,18 +19,37 @@ const UserSchema = new Schema({
         unique: true,
         required: true,
     },
-    groupIds: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: "Group",
-        },
-    ],
     p2pChatIds: [
         {
-            type: mongoose.Types.ObjectId,
-            ref: "PersonalChat",
+            users: [
+                {
+                    user: {
+                        type: mongoose.Types.ObjectId,  
+                        ref: "User",
+                        required: true,
+                    },
+                    messages: [
+                        {
+                            type: mongoose.Types.ObjectId,
+                            ref: "Message",
+                        },
+                    ],
+                },
+            ],
         },
-    ],
+    ], 
+    Groups:[
+        {
+            groups:[
+                {
+                    groupid:{
+                        type: mongoose.Types.ObjectId,  
+                        ref: "Group"
+                    },
+                }
+            ]
+        }
+    ]
 });
 
 export const User = model("User", UserSchema);

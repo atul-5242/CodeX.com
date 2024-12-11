@@ -15,6 +15,16 @@ const ChatPage = () => {
   const [havePersonalUser, setHavePersonalUser] = useState(false);
   const { token } = useSelector((state) => state.auth);
 
+
+  // Reset Chat data on changing the user:
+  
+  function isUserChanged_Reset_message(user){
+        setMessages([]);
+        // fetch all message:
+        // and then again start appending here.
+  }
+
+
   const inputRef = useRef();
   const wsRef = useRef();
 
@@ -26,6 +36,9 @@ const ChatPage = () => {
       return;
     }
     set_current_Selected_User(user);
+    isUserChanged_Reset_message(user);
+
+
 
     // yes/no answer about whether the user is in the chat.
     const isInPersonalChat = UserData.p2pChatIds?.some((chat) =>
@@ -36,6 +49,8 @@ const ChatPage = () => {
       setHavePersonalUser(true);
     }
   };
+
+
 
   const [alluser, setAllUser] = useState([]);
 
@@ -167,7 +182,12 @@ const ChatPage = () => {
                   })}
                 </div>
                 <div className="flex flex-row mt-5 gap-2">
-                  <input ref={inputRef}
+                  <input ref={inputRef} onKeyDown={(e)=>{
+                    const message=inputRef.current?.value;
+                    if(message && e.key==="Enter"){
+                      sendingMessage(message);
+                    }
+                  }}
                     className="bg-white focus:border-green-500 focus:ring focus:ring-green-300 w-full p-2 rounded-xl"
                     type="text"
                     placeholder="Type a message"
