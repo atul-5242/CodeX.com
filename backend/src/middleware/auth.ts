@@ -5,12 +5,13 @@ type headerType = string | undefined;
 
 export const userMiddleware =(req:Request,res:Response,next:NextFunction):void =>{
 
-    const header:headerType = req.headers["authorization"];
+    const header:headerType|undefined=req.headers.authorization;
     const JWT_SECRET:string |undefined="ChatAppAtul";
     // const token = jwt.verify(header,JWT_SECRET);
 
     // Cheking here header is present or not:
     if(!header || !header.startsWith("Bearer ")) {
+        console.log("The header is here1:",header);
         res.status(401).json({message:"Authorization token is missing or invalid"});
         return;
     }

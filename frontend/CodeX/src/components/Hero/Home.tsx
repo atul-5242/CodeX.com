@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+// import { getAllUserData } from '../../Services/Operations/UserSpecific/UserCall';
 const Home = () => {
 
   const user=useSelector((state)=>state.auth.UserData);
@@ -33,9 +34,10 @@ const Home = () => {
   //   }
   // },[user])
 
-  useEffect(()=>{(async()=>{
-    const AlluserData=await getAll();
-  })()},[])
+  // useEffect(()=>{(async()=>{
+  //   const AlluserData=await getAllUserData({token})();
+  //   console.log("AllUserData",AlluserData);
+  // })()},[])
 
   return (
     <div>

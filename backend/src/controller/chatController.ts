@@ -8,7 +8,7 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
     const { from, to, message, type, groupId } = req.body;
     console.log("The body is here:", req.body, "\n\n");
     try {
-        const fromid = new mongoose.Types.ObjectId(from as string);
+        const fromid = from ? new mongoose.Types.ObjectId(from as string):null;
         const toid = to ? new mongoose.Types.ObjectId(to as string) : null;
         console.log("Converted ObjectIds:", { fromid, toid });
 
@@ -20,21 +20,22 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
 
 
             const response = await User.findById(fromid).populate({ path: "p2pChatIds.users.user", select: "name username email" })
-            
+            console.log("response ++++++++++++ is here:",response)
             const toUser = await User.findById(toid)
                 .populate({
                     path: "p2pChatIds.users.messages",
                     model: "Message",
                 });
+                console.log("toUser is here:",toUser)
             if (!response || !toUser) {
                 return res.status(404).json({ success: false, message: "One or both users not found." });
             }
 
 
-            if (!response) {
-                //@ts-ignore
-                return response.status(404).json({ success: false, message: "User not found." });
-            }
+            // if (!response) {
+            //     //@ts-ignore
+            //     return response.status(404).json({ success: false, message: "User not found." });
+            // }
             const newMessage = new Message({
                 from: fromid,
                 to: toid,
@@ -113,7 +114,8 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
             const updatedResponse = await User.findById(fromid)
                                     .populate({ path: "p2pChatIds.users.user", select: "name username email" })
                                     .populate({ path: "p2pChatIds.users.messages", model: "Message" });
-
+            
+                                    
             return res.status(200).json({
                 message: "yes message is sent.",
                 ResponseData: updatedResponse
@@ -176,5 +178,26 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
     } catch (error) {
         console.error("Error sending message:", error);
         return res.status(500).json({ success: false, message: "Failed to send message." });
+    }
+};
+
+
+export const getAllMessagesByID = async (req: Request, res: Response): Promise<Response> => {
+    const  id  = req.params.id;;
+    const ID = id ? new mongoose.Types.ObjectId(id as string):null;
+    console.log("This is the id",id,"sdfgh");
+    try {
+        const response = await User.findById(ID).populate("p2pChatIds.users.messages");
+        if (!response) {
+            return res.status(404).json({ success: false, message: "No messages found." });
+        }
+        return res.status(200).json({
+            message: "Messages fetched successfully",
+            responseData: response,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error" + error,
+        });
     }
 };

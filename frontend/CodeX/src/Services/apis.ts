@@ -13,6 +13,6 @@ export const UserEndPoints = {
 }
 
 export const ChatEndPoints = {
-   GET_CHAT_BY_ID_API:BASE_URL+"/chat/getChatById",
-   CREATE_CHAT_BY_ID_API:BASE_URL+"/chat/sendMessage",
+    GET_ALL_MESSAGES_BY_ID_API:BASE_URL+"/chat/getChatById",
+    CREATE_CHAT_BY_ID_API:BASE_URL+"/chat/sendMessage",
 }

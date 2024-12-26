@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getAllUserData } from "../../Services/Operations/UserSpecific/UserCall";
 import { useSelector } from "react-redux";
+import { CREATE_CHAT_BY_ID_API, getAll_Messages_ByID } from "../../Services/Operations/ChatCall/ChatapiCall";
 
 const ChatPage = () => {
 
@@ -12,14 +13,38 @@ const ChatPage = () => {
   const [current_Selected_User, set_current_Selected_User] = useState({});
 
   const { UserData } = useSelector((state) => state.auth);
-  const [havePersonalUser, setHavePersonalUser] = useState(false);
+  // const [havePersonalUser, setHavePersonalUser] = useState(false);
   const { token } = useSelector((state) => state.auth);
 
 
   // Reset Chat data on changing the user:
   
-  function isUserChanged_Reset_message(user){
-        setMessages([]);
+  async function isUserChanged_Reset_message(id){
+        const CurrentUserMessage=await getAll_Messages_ByID({id})();
+        console.log("allmessagesResponse",CurrentUserMessage);
+        const dataMessage=CurrentUserMessage?.data?.responseData?.p2pChatIds;
+        // let messageData=[];
+        // const index=dataMessage.findIndex(item => item.from===UserData._id);
+        // for (let index = 0; index < dataMessage.length; index++) {
+        //   messageData.push();
+        // }
+
+      let finded=false;
+      let index=0;
+      for (let index = 0; index < dataMessage.length; index++) {
+        if(dataMessage[index].users[0].user.equals(UserData._id)){
+          finded=true;
+          break;
+        }
+      }
+      if(finded){
+        let dataAllMessage=[];
+        for(let index=0;index<dataMessage.length;index++){
+          dataAllMessage.push(dataMessage[index]?.messages[index]?.message);
+      }
+      setMessages([]);
+      setMessages(dataAllMessage);
+        console.log("DataMessage",dataMessage);
         // fetch all message:
         // and then again start appending here.
   }
@@ -36,18 +61,18 @@ const ChatPage = () => {
       return;
     }
     set_current_Selected_User(user);
-    isUserChanged_Reset_message(user);
+    isUserChanged_Reset_message(id);
 
 
 
     // yes/no answer about whether the user is in the chat.
-    const isInPersonalChat = UserData.p2pChatIds?.some((chat) =>
-      chat.participants.some((participant) => participant.userId === id)
-    );
+    // const isInPersonalChat = UserData.p2pChatIds?.some((chat) =>
+    //   chat.participants.some((participant) => participant.userId === id)
+    // );
 
-    if (isInPersonalChat) {
-      setHavePersonalUser(true);
-    }
+    // if (isInPersonalChat) {
+    //   setHavePersonalUser(true);
+    // }
   };
 
 
@@ -57,7 +82,7 @@ const ChatPage = () => {
   useEffect(() => {
     const allUser = async () => {
       try {
-        const response = await getAllUserData()();
+        const response = await getAllUserData({token})();
         console.log("response", response);
         setAllUser(response?.data?.userData);
       } catch (error) {
@@ -96,13 +121,13 @@ const ChatPage = () => {
         to: current_Selected_User._id,
         message: messageText,
     }
-
     wsRef.current?.send(JSON.stringify(messagePayload));
-
-
+    
+    
     // tHE TEXT That sended by the user is added to the messages array
     setMessages(prevMessages => [...prevMessages, {...messagePayload,from:UserData._id}]);
     inputRef.current.value="";
+    CREATE_CHAT_BY_ID_API(messagePayload,{token})();
   }
   }
   return (
@@ -116,21 +141,21 @@ const ChatPage = () => {
           <div className="flex flex-col gap-1 overflow-y-auto h-[30rem]">
             {
               //@ts-ignore
-              alluser.map((item, index) => {
+              alluser.map((user, index) => {
                 return (
                   <button
                     className=" bg-black text-white w-full p-3"
-                    key={item._id}
+                    key={user._id}
                     onClick={() => {
-                      UserDataHandler(item._id);
+                      UserDataHandler(user._id);
                     }}
                   >
                     <div className="flex  gap-5 items-center">
                       <div
                         className="bg-white rounded-full w-10 h-10"
-                        style={{ backgroundColor: item.avatarColor }}
+                        style={{ backgroundColor: user.avatarColor }}
                       ></div>
-                      <div>{item.name}</div>
+                      <div>{user.name}</div>
                     </div>
                   </button>
                 );
@@ -186,6 +211,7 @@ const ChatPage = () => {
                     const message=inputRef.current?.value;
                     if(message && e.key==="Enter"){
                       sendingMessage(message);
+                      
                     }
                   }}
                     className="bg-white focus:border-green-500 focus:ring focus:ring-green-300 w-full p-2 rounded-xl"
