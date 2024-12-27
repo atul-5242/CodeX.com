@@ -19,37 +19,42 @@ const ChatPage = () => {
 
   // Reset Chat data on changing the user:
   
-  async function isUserChanged_Reset_message(id){
-        const CurrentUserMessage=await getAll_Messages_ByID({id})();
-        console.log("allmessagesResponse",CurrentUserMessage);
-        const dataMessage=CurrentUserMessage?.data?.responseData?.p2pChatIds;
-        // let messageData=[];
-        // const index=dataMessage.findIndex(item => item.from===UserData._id);
-        // for (let index = 0; index < dataMessage.length; index++) {
-        //   messageData.push();
-        // }
-
-      let finded=false;
-      let index=0;
-      for (let index = 0; index < dataMessage.length; index++) {
-        if(dataMessage[index].users[0].user.equals(UserData._id)){
-          finded=true;
-          break;
-        }
+  async function isUserChanged_Reset_message(id) {
+    const CurrentUserMessage = await getAll_Messages_ByID({ id })();
+    console.log("allmessagesResponse", CurrentUserMessage);
+    const dataMessage = CurrentUserMessage?.data?.responseData?.p2pChatIds;
+  
+    console.log(
+      "dataMessage>>>>>>>>>>>>>>>>>++++++++++++++++++-------------------",
+      dataMessage[0]?.users[0]?.user
+    );
+    console.log(
+      "dataMessage>>>>>>>>>>>>>>>>>++++++++++++++++++-------------------2222222222222222222",
+      dataMessage
+    );
+  
+    let currentUser_index = 0;
+    for (let i = 0; i < dataMessage.length; i++) {
+      if (dataMessage[i]?.users[0]?.user === UserData._id) {
+        currentUser_index = i;
+        break;
       }
-      if(finded){
-        let dataAllMessage=[];
-        for(let index=0;index<dataMessage.length;index++){
-          dataAllMessage.push(dataMessage[index]?.messages[index]?.message);
-      }
-      setMessages([]);
-      setMessages(dataAllMessage);
-        console.log("DataMessage",dataMessage);
-        // fetch all message:
-        // and then again start appending here.
+    }
+  
+    const allMessageTo_Show = dataMessage[currentUser_index]?.users[0]?.messages || [];
+    // const dataHere = [];
+    
+    setMessages([]);
+    for (let i = 0; i < allMessageTo_Show.length; i++) {
+      setMessages(prevMessages => [...prevMessages, allMessageTo_Show[i]]);
+    }
+    console.log(
+      "dataHere>>>>>>>>>>>>>>>>>++++++++++++++++++-------------------",
+      messages
+    );
+    
   }
-
-
+  
   const inputRef = useRef();
   const wsRef = useRef();
 
@@ -211,7 +216,6 @@ const ChatPage = () => {
                     const message=inputRef.current?.value;
                     if(message && e.key==="Enter"){
                       sendingMessage(message);
-                      
                     }
                   }}
                     className="bg-white focus:border-green-500 focus:ring focus:ring-green-300 w-full p-2 rounded-xl"
