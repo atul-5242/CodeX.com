@@ -23,25 +23,98 @@ const TestNew = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navigation */}
-      {/* <nav className="fixed w-full z-50 bg-black/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-medium">Smart Device</div>
-            <div className="hidden md:flex space-x-8">
-              <button className="text-sm hover:text-gray-300 transition-colors">Overview</button>
-              <button className="text-sm hover:text-gray-300 transition-colors">Features</button>
-              <button className="text-sm hover:text-gray-300 transition-colors">Tech Specs</button>
-              <button className="text-sm px-4 py-1 bg-white text-black rounded-full hover:bg-gray-200 transition-colors">
-                Buy
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav> */}
+    
       {/* <NavBar/> */}
 
-      {/* Hero Section */}
+
+      {/* Left */}
+        <div className='absolute left-0 w-[35rem] z-[30] translate-x-10 '>
+                      {/* image of phone */}
+                      <motion.div className=' -translate-x-[1rem] z-[30]'
+                      // <motion.div className='-translate-y-[50rem] -translate-x-[30rem] z-[-1]'
+                      initial={{opacity:0,translateX:'-1rem',translateY:'20rem'}}
+                      animate={{opacity:1,translateX:'-1rem',translateY:'8rem'}}
+                      transition={{duration:1.2}}
+                      
+                      
+                      >
+                        
+                        {showDot && (
+                          <div className='absolute z-[1] translate-x-[20rem] translate-y-[1rem]  h-[10rem]'>
+        <motion.div 
+          initial={{opacity:0}}
+          animate={{opacity:1}}
+          transition={{duration:1.5}}
+        className="relative flex items-center justify-center w-36 h-24 top-10">
+          <div className='aboslute translate-x-32 translate-y-20'>
+                      <GoingtoC/>
+                    </div>
+              {/* Outer glowing circles */}
+              <motion.div
+                className="absolute w-12 h-12 rounded-full bg-white opacity-10"
+                animate={{ scale: [1, 1.5, 1] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              <motion.div
+                className="absolute w-8 h-8 rounded-full bg-white opacity-30"
+                animate={{ scale: [1, 1.4, 1] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              {/* Main glowing dot */}
+              <motion.div
+                className="w-4 h-4 rounded-full bg-white"
+                animate={{ opacity: [0.8, 1, 0.8] }}
+                transition={{
+                  duration: 0.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            </motion.div>
+                          </div>
+                      
+                    )}
+
+
+
+                    {/* The Line going from the phone to the screen to C of CodeX*/}
+                    
+                        <img src="https://www.apple.com/v/iphone-16-pro/d/images/overview/apple-intelligence/apple_intelligence_endframe__ksa4clua0duu_xlarge.jpg" alt="" className='bg-slate-600 w-[27rem] mx-auto shadow-2xl rounded-3xl' />
+                      </motion.div>
+                
+                      
+
+                  {/* Shine Line */}
+                  <div className="rotate-180  absolute top-[40rem] translate-x-20 w-96 h-1 bg-gradient-to-r from-gray-800 via-slate-950 to-gray-800 rounded overflow-hidden">
+                    <div
+                      className="absolute  top-0 left-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/60 to-transparent"
+                      style={{
+                        animation: "shine 3s infinite ease",
+                      }}
+                      
+                    >
+
+                      
+                    </div>
+                    
+              </div>
+        </div>
+
+
+
+
+      {/* Hero Section Center*/}
+
+     
+
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-black" />
@@ -52,11 +125,11 @@ const TestNew = () => {
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <div className='flex justify-center items-center'>
-              <div className='text-7xl'>
+              <div className='text-[4rem] tracking-wide'>
                 Code 
               </div>
-            <div className={`${showDot?"text-blue-700 md:text-[9rem]":"text-green-300 "} text-7xl font-bold transition-all duration-1000 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            <div className={`${showDot?"text-blue-700 md:text-[9rem]":"text-green-300 "}  text-7xl font-bold transition-all duration-1000 ${
+              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 translate-x-1'
             }`}>
               X
             </div>
@@ -107,134 +180,52 @@ const TestNew = () => {
      
 
 
-
-{/* Left */}
-<div>
-              {/* image of phone */}
-              <motion.div className='-translate-y-[50rem] -translate-x-[30rem] z-[-1]'
-              initial={{opacity:0,translateX:'-30rem',translateY:'-32rem'}}
-              animate={{opacity:1,translateX:'-29rem',translateY:'-35rem'}}
-              transition={{duration:1.2}}
-              
-              
-              >
-                
-                 {showDot && (
-                   <div className='absolute z-[1] translate-x-[52rem] translate-y-[5rem]'>
- <motion.div 
-  initial={{opacity:0}}
-  animate={{opacity:1}}
-  transition={{duration:1.5}}
- className="relative flex items-center justify-center w-16 h-16">
-  <div className='aboslute translate-x-32 translate-y-16'>
-              <GoingtoC/>
-            </div>
-      {/* Outer glowing circles */}
-      <motion.div
-        className="absolute w-12 h-12 rounded-full bg-white opacity-10"
-        animate={{ scale: [1, 1.5, 1] }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="absolute w-8 h-8 rounded-full bg-white opacity-30"
-        animate={{ scale: [1, 1.4, 1] }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      {/* Main glowing dot */}
-      <motion.div
-        className="w-4 h-4 rounded-full bg-white"
-        animate={{ opacity: [0.8, 1, 0.8] }}
-        transition={{
-          duration: 0.8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    </motion.div>
-                   </div>
-              
-            )}
-
-
-
-{/* The Line going from the phone to the screen to C of CodeX*/}
-            
-                <img src="https://www.apple.com/v/iphone-16-pro/d/images/overview/apple-intelligence/apple_intelligence_endframe__ksa4clua0duu_xlarge.jpg" alt="" className='bg-slate-600 w-[27rem] mx-auto shadow-2xl rounded-3xl' />
-              </motion.div>
-        
-              
-
-          {/* Shine Line */}
-          <div className="rotate-180  absolute top-0 translate-y-[40rem] translate-x-20 w-96 h-1 bg-gradient-to-r from-gray-800 via-slate-950 to-gray-800 rounded overflow-hidden">
-            <div
-              className="absolute  top-0 left-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/60 to-transparent"
-              style={{
-                animation: "shine 3s infinite ease",
-              }}
-              
-            >
-
-              
-            </div>
-            
-      </div>
-</div>
-
-
      {/* Right */}
-     <div className=''>
-      <div>
+        <div className=''>
+          <div>
 
-          {/* Shine Line */}
-      
-              <div>
-                <div className="absolute top-72 right-[22rem] w-72 h-1 bg-gradient-to-r from-gray-800 via-slate-950 to-gray-800 rounded overflow-hidden">
-                <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-transparent via-white/60 to-transparent"
-                  style={{
-                    animation: "shine 3s infinite ease",
-                  }}
-                ></div>
-              </div>
-              </div>
-              
-            
-      </div>
-      <div className='absolute -top-10 right-0 w-[35rem]'>
-      <motion.video
-  initial={{ opacity: 0, translateY: "18rem", translateX: "4rem" }}
-  animate={{
-    opacity: 1, // Opacity will transition to 1 and stay there
-    translateY: ["18rem", "17rem", "18rem"],  // Smooth up and down motion
-    translateX: "4rem"  // No change in translateX, but you can animate it if needed
-  }}
-  transition={{
-    duration: 2.4,  // Animation duration for smooth movement (longer for smoother up and down)
-    repeat: Infinity,  // Repeat the translation animation infinitely
-    ease: "easeInOut",  // Smooth transition easing
-    repeatType: "loop",  // Ensure the animation repeats smoothly
-    opacity: { duration: 1.2, delay: 0 }  // Opacity transitions to 1 immediately and stays there
-  }}
-  className="w-[28rem] rounded-3xl translate-x-16 shadow-2xl shadow-slate-200 absolute translate-y-72"
-  src={MainVideo}
-  autoPlay
-  loop
-  muted
-/>
+              {/* Shine Line */}
+          
+                  <div className=''>
+                    <div className="absolute top-[18rem]  bg-white  right-[22rem] w-72 h-1 bg-gradient-to-r from-gray-800 via-slate-950 to-gray-800 rounded overflow-hidden">
+                    <div
+                      className="absolute left-0 h-full bg-gradient-to-r from-transparent via-white/60 to-transparent"
+                      style={{
+                        animation: "shine 3s infinite ease",
+                      }}
+                    ></div>
+                  </div>
+                  </div>
+                  
+                
+          </div>
+          <div className='absolute -top-10 right-0 w-[35rem]'>
+          <motion.video
+      initial={{ opacity: 0, translateY: "18rem", translateX: "4rem" }}
+      animate={{
+        opacity: 1, // Opacity will transition to 1 and stay there
+        translateY: ["18rem", "17rem", "18rem"],  // Smooth up and down motion
+        translateX: "4rem"  // No change in translateX, but you can animate it if needed
+      }}
+      transition={{
+        duration: 2.4,  // Animation duration for smooth movement (longer for smoother up and down)
+        repeat: Infinity,  // Repeat the translation animation infinitely
+        ease: "easeInOut",  // Smooth transition easing
+        repeatType: "loop",  // Ensure the animation repeats smoothly
+        opacity: { duration: 1.2, delay: 0 }  // Opacity transitions to 1 immediately and stays there
+      }}
+      className="w-[28rem] rounded-3xl translate-x-16 shadow-2xl shadow-slate-200 absolute translate-y-72"
+      src={MainVideo}
+      autoPlay
+      loop
+      muted
+    />
 
 
-          {/* <MobileView/> */}
-      </div>
+              {/* <MobileView/> */}
+          </div>
 
-     </div>
+        </div>
 
 
 
