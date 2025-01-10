@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'red-hat': ['"Red Hat Display"', 'serif'], 
+        'handlee': ['"Handlee"', 'serif'], 
+      },
+    },
   },
-  plugins: [require('tailwind-scrollbar')],
-}
+  plugins: [
+    require('tailwind-scrollbar'), 
+  ],
+};

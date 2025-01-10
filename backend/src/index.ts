@@ -7,7 +7,8 @@ import WebSocket,{WebSocketServer} from "ws";
 import { SocketManager } from "./SocketManager/SocketMange";
 import ChatRoute from "./routes/chatRoutes";
 import UserRoute from "./routes/UserRoute/User_Route";
-
+import dotenv from "dotenv";
+dotenv.config();
 export const socketManager = new SocketManager(8082); // WebSocket server on port 8080
 const app = express();
 
@@ -33,8 +34,11 @@ app.use("/api/chat",ChatRoute);
 app.use("/api/user",UserRoute);
 // app.use(userMiddleware as any);
 
+// console.log("process.env.DATABASE_URL",process.env.DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/ChatApp")
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("Error connecting to MongoDB", err));
 
-mongoose.connect(process.env.MONGO_URL || "mongodb+srv://atulfzdlko2001:CMeguoisxp33vKpJ@cluster0.w7u2ewk.mongodb.net/ChatApp");
 
 app.listen(process.env.PORT || 3002, () => {
     console.log("Express Server is running on port 3002");
