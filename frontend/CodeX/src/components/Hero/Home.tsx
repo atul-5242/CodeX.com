@@ -1,6 +1,4 @@
 // Now the main Hero section is started here:
-import React, { useState, useEffect } from 'react';
-
 import PeopleTaking from './PageData/PeopleTaking';
 import HeroSection from './PageData/HeroSection';
 import KeepInTouch from './PageData/KeepInTouch';

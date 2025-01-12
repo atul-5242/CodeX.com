@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
-  
+  // @ts-ignore
   const user=useSelector((state)=>state.auth.UserData);
-  const token=useSelector((state)=>state.auth.token);
+  // const token=useSelector((state)=>state.auth.token);
 
   const LogoutHandler=()=>{
     localStorage.removeItem("token");

@@ -20,7 +20,7 @@ const ChatPage = () => {
 
 
   // Reset Chat data on changing the user:
-  
+  // @ts-ignore
   async function isUserChanged_Reset_message(id) {
     const CurrentUserMessage = await getAll_Messages_ByID({ id })();
     console.log("allmessagesResponse", CurrentUserMessage);
