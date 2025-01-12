@@ -10,6 +10,7 @@ const CodeXVideoSection = () => {
         {/* Background Video */}
         <div className='w-screen blur-3xl bg-black h-[20rem] rotate-120 translate-y-[22rem] -translate-x-[64rem] absolute z-[100]'></div>
         <motion.video 
+        preload="auto"
           whileInView={{
             // Add your animation configurations here
           }}

@@ -155,6 +155,7 @@ const HeroSection = () => {
           </div>
           <div className='absolute -top-10 right-0 w-[35rem]'>
             <motion.video
+             preload="auto"
               initial={{ opacity: 0, translateY: "18rem", translateX: "4rem" }}
               animate={{
                 opacity: 1,

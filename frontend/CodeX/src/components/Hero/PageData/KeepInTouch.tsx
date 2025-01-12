@@ -20,6 +20,7 @@ const SectionVideo = ({ range, videoSrc, scrollYProgress }) => {
         className="p-8"
       >
         <video
+        preload="auto"
           className="w-full h-full rounded-3xl object-cover shadow-2xl"
           src={videoSrc}
           autoPlay
@@ -58,6 +59,7 @@ const Section = ({ range, title, subtitle, description, videoSrc, scrollYProgres
         className="p-8"
       >
         <video
+        preload="auto"
           className="w-full h-full rounded-3xl object-cover shadow-2xl"
           src={videoSrc}
           autoPlay
