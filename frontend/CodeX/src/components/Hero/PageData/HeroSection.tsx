@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import GoingtoC from '../SVG/GoingtoC';
-import MainVideo from "../../../assets/Feature Section Video/snapvideo.io--Message Bubble Animation - After Effects Template.mp4";
+import MainVideo from "../../../assets/Feature Section Video/Message Bubble Animation - After Effects Template.mp4";
 import './HeroSection.module.css'; 
 
 const HeroSection = () => {

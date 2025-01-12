@@ -2,8 +2,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import WorldWideConnection from "../../../assets/Feature Section Video/pexels-cottonbro-7494121.mp4";
 import VideoCall from "../../../assets/Feature Section Video/Girl-On-Video-Call.mp4";
-import Encryption from "../../../assets/Feature Section Video/snapvideo.io--How Encryption Works - and How It Can Be Bypassed.mp4";
-import MessageText from "../../../assets/Feature Section Video/snapvideo.io--Message Bubble Animation - After Effects Template.mp4";
+import Encryption from "../../../assets/Feature Section Video/videoplayback (5).mp4";
+import MessageText from "../../../assets/Feature Section Video/Message Bubble Animation - After Effects Template.mp4";
 
 const percentToFraction = (percent: number) => percent / 100;
 // @ts-ignore
