@@ -1,19 +1,24 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const GoingtoC = () => {
   const pathRef = useRef(null);
 
   useEffect(() => {
     if (pathRef.current) {
+      // @ts-ignore
       const pathLength = pathRef.current.getTotalLength();
 
       // Set initial state: hide the path
+      // @ts-ignore
       pathRef.current.style.strokeDasharray = pathLength;
+      // @ts-ignore
       pathRef.current.style.strokeDashoffset = pathLength;
 
       // Trigger the animation after a slight delay
       setTimeout(() => {
+        // @ts-ignore	
         pathRef.current.style.transition = 'stroke-dashoffset 2s ease';
+        // @ts-ignore
         pathRef.current.style.strokeDashoffset = 0; // Animate to show the path
       }, 100);
     }

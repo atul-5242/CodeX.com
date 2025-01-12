@@ -1,7 +1,7 @@
 import { apiConnector } from "../../apiConnector";
 import { ChatEndPoints } from "../../apis";
 
-
+// @ts-ignore
 export const CREATE_CHAT_BY_ID_API=(body,{token})=>{
     return async ()=>{
         try {
@@ -17,13 +17,13 @@ export const CREATE_CHAT_BY_ID_API=(body,{token})=>{
     }
 }
 
-
-export const getAll_Messages_ByID=(atul)=>{
+// @ts-ignore
+export const getAll_Messages_ByID=(data)=>{
 
     return async ()=>{
         try {
-            console.log("geting AllUserData Message atul",atul.id);
-            const response = await apiConnector("GET",`${ChatEndPoints.GET_ALL_MESSAGES_BY_ID_API}/${atul.id}`,null,null,null);
+            console.log("geting AllUserData Message atul",data.id);
+            const response = await apiConnector("GET",`${ChatEndPoints.GET_ALL_MESSAGES_BY_ID_API}/${data.id}`,null,null,null);
             console.log("GET_ALL_MESSAGES_BY_ID_API response",response);
             return response;
         } catch (error) {

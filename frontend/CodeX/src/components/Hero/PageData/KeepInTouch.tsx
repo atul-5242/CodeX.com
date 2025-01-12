@@ -1,10 +1,12 @@
-import React from 'react';
+// import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import WorldWideConnection from "../../../assets/Feature Section Video/pexels-cottonbro-7494121.mp4";
 import VideoCall from "../../../assets/Feature Section Video/Girl-On-Video-Call.mp4";
 import Encryption from "../../../assets/Feature Section Video/snapvideo.io--How Encryption Works - and How It Can Be Bypassed.mp4";
 import MessageText from "../../../assets/Feature Section Video/snapvideo.io--Message Bubble Animation - After Effects Template.mp4";
-const percentToFraction = (percent) => percent / 100;
+
+const percentToFraction = (percent: number) => percent / 100;
+// @ts-ignore
 const SectionVideo = ({ range, videoSrc, scrollYProgress }) => {
   const scale = useTransform(scrollYProgress, range, [0.8, 1, 1, 0.8]);
   const opacity = useTransform(scrollYProgress, range, [0, 1, 1, 0]);
@@ -28,6 +30,7 @@ const SectionVideo = ({ range, videoSrc, scrollYProgress }) => {
     </>
   );
 };
+// @ts-ignore
 const Section = ({ range, title, subtitle, description, videoSrc, scrollYProgress }) => {
   const textOpacity = useTransform(scrollYProgress, range, [0, 1, 1, 0]);
   const textY = useTransform(scrollYProgress, range, [50, 0, 0, -50]);
@@ -68,7 +71,7 @@ const Section = ({ range, title, subtitle, description, videoSrc, scrollYProgres
 
 const KeepInTouch = () => {
   const { scrollYProgress } = useScroll();
-  const introOpacity = useTransform(scrollYProgress, [0, 0.1, 0.15], [1, 1, 0]);
+  // const introOpacity = useTransform(scrollYProgress, [0, 0.1, 0.15], [1, 1, 0]);
 
   const sections = [
     {

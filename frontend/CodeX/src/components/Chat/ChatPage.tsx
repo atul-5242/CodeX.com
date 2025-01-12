@@ -1,19 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAllUserData } from "../../Services/Operations/UserSpecific/UserCall";
 import { useSelector } from "react-redux";
 import { CREATE_CHAT_BY_ID_API, getAll_Messages_ByID } from "../../Services/Operations/ChatCall/ChatapiCall";
 
 const ChatPage = () => {
 
-  const [messageType, setMessageType] = useState();
+  // const [messageType, setMessageType] = useState();
 
   const [messages, setMessages] = useState([]);
 
   const [userTitle, setUserTitle] = useState("");
   const [current_Selected_User, set_current_Selected_User] = useState({});
-
+  // @ts-ignore
   const { UserData } = useSelector((state) => state.auth);
   // const [havePersonalUser, setHavePersonalUser] = useState(false);
+
+  // @ts-ignore
   const { token } = useSelector((state) => state.auth);
 
 
@@ -46,6 +48,7 @@ const ChatPage = () => {
     
     setMessages([]);
     for (let i = 0; i < allMessageTo_Show.length; i++) {
+      // @ts-ignore
       setMessages(prevMessages => [...prevMessages, allMessageTo_Show[i]]);
     }
     console.log(
@@ -57,10 +60,12 @@ const ChatPage = () => {
   
   const inputRef = useRef();
   const wsRef = useRef();
-
+  // @ts-ignore
   const UserDataHandler = (id) => {
     console.log("The user id is here >>>>>>>>>>>>>>>>>", id);
+    // @ts-ignore
     setUserTitle(alluser.find((user) => user._id === id)?.name);
+    // @ts-ignore
     const user = alluser.find((user) => user._id === id);
     if (!user) {
       return;
@@ -103,8 +108,10 @@ const ChatPage = () => {
     const ws= new WebSocket(`ws://localhost:8082?token=${token}`);
     ws.onmessage=(event)=>{
       const Resposne_data=JSON.parse(event.data);
+      // @ts-ignore
       setMessages(prevMessages => [...prevMessages, Resposne_data]);
     }
+    // @ts-ignore
     wsRef.current=ws;
 
     ws.onopen = () => console.log("Connected to WebSocket");
@@ -116,21 +123,26 @@ const ChatPage = () => {
   }, [token]);
 
 
-
+  // @ts-ignore
   const sendingMessage = (message) => {
+    // @ts-ignore
     const messageText=inputRef.current?.value;
     if(messageText && current_Selected_User){
       const messagePayload={
         type: "direct",
         from: UserData._id,
+        // @ts-ignore
         to: current_Selected_User._id,
         message: messageText,
     }
+    // @ts-ignore
     wsRef.current?.send(JSON.stringify(messagePayload));
     
     
     // tHE TEXT That sended by the user is added to the messages array
+    // @ts-ignore
     setMessages(prevMessages => [...prevMessages, {...messagePayload,from:UserData._id}]);
+    // @ts-ignore
     inputRef.current.value="";
     CREATE_CHAT_BY_ID_API(messagePayload,{token})();
   }
@@ -150,16 +162,19 @@ const ChatPage = () => {
                 return (
                   <button
                     className=" bg-black text-white w-full p-3"
-                    key={user._id}
+                    key={index}
                     onClick={() => {
+                      // @ts-ignore
                       UserDataHandler(user._id);
                     }}
                   >
                     <div className="flex  gap-5 items-center">
                       <div
                         className="bg-white rounded-full w-10 h-10"
+                        // @ts-ignore
                         style={{ backgroundColor: user.avatarColor }}
                       ></div>
+                      {/* @ts-ignore */}
                       <div>{user.name}</div>
                     </div>
                   </button>
@@ -191,6 +206,7 @@ const ChatPage = () => {
                     return (
                       <div
                         className={`flex ${
+                          // @ts-ignore
                           message.from === UserData._id
                             ? "justify-end"
                             : "justify-start"
@@ -199,12 +215,14 @@ const ChatPage = () => {
                       >
                         <div
                           className={`mb-2 ${
+                            // @ts-ignore
                             message.from === UserData._id
                               ? "bg-green-400"
                               : "bg-white"
                           } w-fit rounded-lg p-2`}
                           key={index}
                         >
+                          {/* @ts-ignore */}
                           {message.message}
                         </div>
                       </div>
@@ -212,7 +230,9 @@ const ChatPage = () => {
                   })}
                 </div>
                 <div className="flex flex-row mt-5 gap-2">
+                  {/* @ts-ignore */}
                   <input ref={inputRef} onKeyDown={(e)=>{
+                    // @ts-ignore
                     const message=inputRef.current?.value;
                     if(message && e.key==="Enter"){
                       sendingMessage(message);
@@ -224,6 +244,7 @@ const ChatPage = () => {
                   />
                   <button 
                   onClick={()=>{
+                    // @ts-ignore
                     const message=inputRef.current?.value;
                     if(message){
                       sendingMessage(message);

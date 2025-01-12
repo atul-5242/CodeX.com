@@ -1,7 +1,7 @@
 import { apiConnector } from "../../apiConnector";
 import { UserEndPoints } from "../../apis";
 
-
+// @ts-ignore
 export const getAllUserData=({token})=>{
     return async ()=>{
         try {

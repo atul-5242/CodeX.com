@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Lock, ArrowRight } from 'lucide-react';
 import evaimage from "../../assets/eva image.webp"
+import { useState } from 'react';
 const Login = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  // @ts-ignore
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle login logic here

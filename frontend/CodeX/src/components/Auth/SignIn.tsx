@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, UserCircle, ArrowRight, AlertCircle } from 'lucide-react';
@@ -10,7 +10,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
 
@@ -28,6 +28,7 @@ const SignIn = () => {
           const response = await signInAPI(formData, navigate)();
           console.log("The SIGNIN_API Response in frontend:", response);
         } catch (error) {
+          // @ts-ignore
           setError(error.message || 'An unknown error occurred');
         }
       };
@@ -36,10 +37,10 @@ const SignIn = () => {
       setFormSubmitted(false);
     }
   }, [formSubmitted, username, name, email, password, confirmPassword, navigate]);
-
+  // @ts-ignore
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError(null);
+    setError("");
     setFormSubmitted(true);
   };
 

@@ -5,7 +5,7 @@ import PeopleTaking from './PageData/PeopleTaking';
 import HeroSection from './PageData/HeroSection';
 import KeepInTouch from './PageData/KeepInTouch';
 import CodeXVideoSection from './PageData/CodeXVideoSection';
-import Footer from '../../common/CommonComponent/Footer';
+// import Footer from '../../common/CommonComponent/Footer';
 import NavBar from '../../common/CommonComponent/NavBar';
 
 // Main Code Of CodeX
