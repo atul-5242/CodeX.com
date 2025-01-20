@@ -1,17 +1,35 @@
-// import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Lock, ArrowRight } from 'lucide-react';
-import evaimage from "../../assets/eva image.webp"
-import { useState } from 'react';
+import evaimage from "../../assets/eva image.webp";
+import { useState, useEffect } from 'react';
+import { loginAPI } from '../../Services/Operations/AuthCalls/authAPI';
+import { useDispatch } from 'react-redux';
+
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // @ts-ignore
+  const [fromSubmitted, setFromSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (fromSubmitted) {
+      const fromData = { username, password };
+
+      async function login() {
+        const response = await loginAPI(fromData, navigate, dispatch)();
+        console.log("Here is login", response);
+      }
+
+      login();
+    }
+  }, [navigate, fromSubmitted, username, password, dispatch]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
+    setFromSubmitted(true);
+    console.log("form of Login is Submitted.");
   };
 
   return (

@@ -12,6 +12,7 @@ function App() {
         <Route path='/signIn' element={<SignIn />}/>
         <Route path='/chat' element={<ChatPage />}/>
         <Route path='/' element={<Home />}/>
+        <Route path='/codefeatureSection' element={<CodeXFeatureSection />}/>
       </Routes>
     </>
   )

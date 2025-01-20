@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import GoingtoC from '../SVG/GoingtoC';
 import MainVideo from "../../../assets/Feature Section Video/Message Bubble Animation - After Effects Template.mp4";
 import './HeroSection.module.css'; 
+import { redirect } from 'react-router-dom';
 
 const HeroSection = () => {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -106,7 +107,12 @@ const HeroSection = () => {
             </p>
 
             <div className='flex space-x-6 justify-center'>
-              <button className=' border shadow-2xl shadow-slate-400 border-slate-800 px-16 py-4 rounded text-white hover:text-black hover:bg-white transition duration-300'>Welcome to Code X</button>
+              <button onClick={()=>{
+                console.log(
+                  "redirecting to code feature section"
+                )
+                redirect("/codefeatureSection");
+              }} className=' border shadow-2xl shadow-slate-400 border-slate-800 px-16 py-4 rounded text-white hover:text-black hover:bg-white transition duration-300'>Welcome to Code X</button>
             </div>
           </div>
 

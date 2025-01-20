@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Group } from "../../models/GroupsModel";
 import { User } from "../../models/User";
-import { Message } from "../../models//messageModel";
+import { Message } from "../../models/messageModel";
 import mongoose from "mongoose";
 
 // Create a new group

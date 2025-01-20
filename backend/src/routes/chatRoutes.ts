@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getAllMessagesByID, sendMessage } from "../controller/chatController";
 // import { userMiddleware } from "../middleware/auth";
-import { addMembers, createGroup } from "../controller/GroupController.ts/GroupControl";
+import { addMembers, createGroup } from "../controller/GroupController/GroupControl";
 
 const ChatRoute = Router();
 

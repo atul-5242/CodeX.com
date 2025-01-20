@@ -259,7 +259,9 @@ const ChatPage = () => {
             </div>
           ) : (
             <div className="flex justify-center items-center w-full h-full text-4xl">
+              <button >
               Welcome to CodeX
+              </button>
             </div>
           )}
         </div>
