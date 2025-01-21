@@ -29,7 +29,7 @@ ChatRoute.post("/addMembers_", (req,res,next)=>{
         next(error);    
     }
 });
-ChatRoute.get("/getChatById/:id", (req,res)=>{  
+ChatRoute.post("/getChatById", (req,res)=>{  
         console.log("Hii there....................................................");
         getAllMessagesByID(req, res);
 }); 

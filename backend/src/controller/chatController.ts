@@ -183,21 +183,63 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
 
 
 export const getAllMessagesByID = async (req: Request, res: Response): Promise<Response> => {
-    const  id  = req.params.id;;
-    const ID = id ? new mongoose.Types.ObjectId(id as string):null;
-    console.log("This is the id",id,"sdfgh");
+    console.log("Handling getAllMessagesByID");
+    const id = req.body.id; // User ID from params
+    const requestedUserID = req.body.requestedUserID; // User ID to find within p2pChatIds
+
+    console.log("Request received. Params ID:", id, "Requested User ID:", requestedUserID);
+
     try {
-        const response = await User.findById(ID).populate("p2pChatIds.users.messages");
-        if (!response) {
-            return res.status(404).json({ success: false, message: "No messages found." });
+        // Validate ObjectId
+        const ID = id ? new mongoose.Types.ObjectId(id as string) : null;
+        // to ? new mongoose.Types.ObjectId(to as string) : null;
+        const requestedUser = requestedUserID ? new mongoose.Types.ObjectId(requestedUserID as string) : null;
+
+        if (!ID || !requestedUser) {
+            console.log("Invalid IDs provided. Params ID:", ID, "Requested User ID:", requestedUser);
+            return res.status(400).json({ success: false, message: "Invalid user IDs provided." });
         }
-        return res.status(200).json({
-            message: "Messages fetched successfully",
-            responseData: response,
+
+        // Find the user by ID
+        const user = await User.findById(ID).populate({
+            path: "p2pChatIds.users.messages",
+            model: "Message",
         });
+
+        console.log("Fetched User:", user);
+
+        if (!user) {
+            console.log("User not found with ID:", ID);
+            return res.status(404).json({ success: false, message: "User not found." });
+        }
+
+        // Search for the requested user in the p2pChatIds array
+        const chatWithUser = user.p2pChatIds.find((chat) =>
+            chat.users.some((u: any) => u.user.toString() === requestedUser.toString())
+        );
+
+        if (chatWithUser) {
+            const messages = chatWithUser.users.flatMap((u: any) => u.messages);
+            console.log("Messages for requested user:", messages);
+            return res.status(200).json({
+                success: true,
+                message: "Messages fetched successfully.",
+                responseDataMessage: messages,
+            });
+        } else {
+            console.log("No messages found for requested user with ID:", requestedUser);
+            return res.status(200).json({
+                success:false,
+                message: "No messages yet.",
+                responseDataMessage: [],    
+            });
+        }
     } catch (error) {
+        console.error("Error fetching messages:", error);
         return res.status(500).json({
-            message: "Internal Server Error" + error,
+            success: false,
+            message: "Internal Server Error",
+            error: "error.message",
         });
     }
 };
