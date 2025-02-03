@@ -6,52 +6,60 @@ import {
   getAll_Messages_ByID,
 } from "../../Services/Operations/ChatCall/ChatapiCall";
 
+// Define simple interfaces for message and user
+interface Message {
+  from: string;
+  type: string;
+  to: string;
+  message: string;
+}
+
+interface User {
+  _id: string;
+  name: string;
+  avatarColor: string;
+}
+
 const ChatPage = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [userTitle, setUserTitle] = useState("");
-  const [current_Selected_User, set_current_Selected_User] = useState({});
+  const [current_Selected_User, set_current_Selected_User] = useState<User | null>(null);
   
   // @ts-ignore
-  const { UserData } = useSelector((state) => state.auth);
+  const { UserData } = useSelector((state: any) => state.auth);
   // @ts-ignore
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state: any) => state.auth);
   
-  const inputRef = useRef();
-  const wsRef = useRef();
-  const messagesEndRef = useRef(null);
-  const [alluser, setAllUser] = useState([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const wsRef = useRef<WebSocket | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const [alluser, setAllUser] = useState<User[]>([]);
 
   const scrollToBottom = () => {
-    // @ts-ignore
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(scrollToBottom, [messages]);
 
-  async function isUserChanged_Reset_message(id) {
-    // @ts-ignore
+  async function isUserChanged_Reset_message(id: string) {
     const requestedUserID = UserData._id;
     const CurrentUserMessage = await getAll_Messages_ByID({
       id,
       requestedUserID,
     })();
-    // @ts-ignore
     const dataMessage = CurrentUserMessage?.data;
     setMessages([]);
-
     if (Array.isArray(dataMessage?.responseDataMessage)) {
-      setMessages(dataMessage?.responseDataMessage);
+      setMessages(dataMessage.responseDataMessage);
     } else {
       setMessages([]);
     }
   }
 
-  const UserDataHandler = (id) => {
-    // @ts-ignore
-    setUserTitle(alluser.find((user) => user._id === id)?.name);
-    // @ts-ignore
+  const UserDataHandler = (id: string) => {
     const user = alluser.find((user) => user._id === id);
     if (!user) return;
+    setUserTitle(user.name);
     set_current_Selected_User(user);
     isUserChanged_Reset_message(id);
   };
@@ -59,7 +67,6 @@ const ChatPage = () => {
   useEffect(() => {
     const allUser = async () => {
       try {
-        // @ts-ignore
         const response = await getAllUserData({ token })();
         setAllUser(response?.data?.userData);
       } catch (error) {
@@ -68,40 +75,30 @@ const ChatPage = () => {
     };
     allUser();
 
-    // @ts-ignore
     const ws = new WebSocket(`ws://localhost:8082?token=${token}`);
     ws.onmessage = (event) => {
       const Resposne_data = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, Resposne_data]);
     };
-    // @ts-ignore
     wsRef.current = ws;
 
     return () => ws.close();
   }, [token]);
 
-  const sendingMessage = (message) => {
-    // @ts-ignore
+  const sendingMessage = () => {
     const messageText = inputRef.current?.value;
     if (messageText && current_Selected_User) {
-      const messagePayload = {
+      const messagePayload: Message = {
         type: "direct",
-        // @ts-ignore
         from: UserData._id,
-        // @ts-ignore
         to: current_Selected_User._id,
         message: messageText,
       };
-      // @ts-ignore
       wsRef.current?.send(JSON.stringify(messagePayload));
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        // @ts-ignore
-        { ...messagePayload, from: UserData._id },
-      ]);
-      // @ts-ignore
-      inputRef.current.value = "";
-      // @ts-ignore
+      setMessages((prevMessages) => [...prevMessages, messagePayload]);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
       CREATE_CHAT_BY_ID_API(messagePayload, { token })();
     }
   };
@@ -114,14 +111,11 @@ const ChatPage = () => {
           <div className="flex items-center gap-4">
             <div 
               className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
-              // @ts-ignore
               style={{ backgroundColor: UserData.avatarColor }}
             >
-              {/* @ts-ignore */}
               {UserData.name?.charAt(0)}
             </div>
             <div>
-              {/* @ts-ignore */}
               <h1 className="text-xl font-bold text-white">{UserData.name}</h1>
               <p className="text-sm text-purple-100">Online</p>
             </div>
@@ -132,7 +126,6 @@ const ChatPage = () => {
           <h2 className="px-4 py-3 text-sm font-semibold text-gray-500">Contacts</h2>
           <div className="space-y-1 px-2">
             {alluser.map((user, index) => {
-              // @ts-ignore
               if (user._id === UserData._id) return null;
               return (
                 <div
@@ -143,16 +136,13 @@ const ChatPage = () => {
                   <div className="relative">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shadow-md"
-                      // @ts-ignore
                       style={{ backgroundColor: user.avatarColor }}
                     >
-                      {/* @ts-ignore */}
                       {user.name?.charAt(0)}
                     </div>
                     <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   <div className="ml-4">
-                    {/* @ts-ignore */}
                     <h2 className="font-semibold text-gray-800">{user.name}</h2>
                     <p className="text-sm text-gray-500">Active now</p>
                   </div>
@@ -171,11 +161,9 @@ const ChatPage = () => {
               <div className="flex items-center gap-4">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
-                  // @ts-ignore
-                  style={{ backgroundColor: current_Selected_User.avatarColor }}
+                  style={{ backgroundColor: current_Selected_User?.avatarColor }}
                 >
-                  {/* @ts-ignore */}
-                  {current_Selected_User.name?.charAt(0)}
+                  {current_Selected_User?.name?.charAt(0)}
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-white">{userTitle}</h2>
@@ -194,19 +182,15 @@ const ChatPage = () => {
                   messages.map((message, index) => (
                     <div
                       key={index}
-                      // @ts-ignore
                       className={`flex ${message.from === UserData._id ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        // @ts-ignore
                         className={`max-w-md p-3 rounded-2xl ${
-                          // @ts-ignore
                           message.from === UserData._id
                             ? "bg-purple-600 text-white rounded-br-none"
                             : "bg-white shadow-sm rounded-bl-none"
                         }`}
                       >
-                        {/* @ts-ignore */}
                         <p className="text-sm">{message.message}</p>
                         <p className="text-xs mt-1 opacity-70">
                           {new Date().toLocaleTimeString([], { 
@@ -227,13 +211,13 @@ const ChatPage = () => {
                 <input
                   ref={inputRef}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") sendingMessage(inputRef.current?.value);
+                    if (e.key === "Enter") sendingMessage();
                   }}
                   className="flex-1 p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Type your message..."
                 />
                 <button
-                  onClick={() => sendingMessage(inputRef.current?.value)}
+                  onClick={() => sendingMessage()}
                   className="px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl transition-colors flex items-center"
                 >
                   <svg
