@@ -26,7 +26,7 @@ const Login = () => {
     }
   }, [navigate, fromSubmitted, username, password, dispatch]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:Event) => {
     e.preventDefault();
     setFromSubmitted(true);
     console.log("form of Login is Submitted.");
