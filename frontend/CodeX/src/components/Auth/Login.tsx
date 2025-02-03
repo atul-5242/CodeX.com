@@ -26,11 +26,12 @@ const Login = () => {
     }
   }, [navigate, fromSubmitted, username, password, dispatch]);
 
-  const handleSubmit = (e:Event) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFromSubmitted(true);
     console.log("form of Login is Submitted.");
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
