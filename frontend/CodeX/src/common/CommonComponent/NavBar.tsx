@@ -1,7 +1,7 @@
 // import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import CodeXLogo from '../../assets/SVG_BG/Code X.svg';
 const NavBar = () => {
   // @ts-ignore
   const user=useSelector((state)=>state.auth.UserData);
@@ -17,7 +17,9 @@ const NavBar = () => {
       <div className="flex items-center justify-evenly">
         {/* Logo or Brand Name */}
         <div className="text-2xl font-bold flex -translate-x-36">
-          <h2 className="text-3xl text-blue-200 font-semibold">Code</h2><h2 className='text-4xl text-green-300 font-semibold'>X</h2>
+        <Link to="/" className='flex items-center gap-4 text-white px-4 py-2 rounded-lg cursor-pointer'>
+        <img src={CodeXLogo} alt="Code X Logo" className='w-24 z-[50]' />
+        </Link>
         </div>
         
         {/* Navigation Links */}
