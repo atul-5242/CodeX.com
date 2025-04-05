@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import RadialEclipse from '../../assets/SVG_BG/Ellipse_radial.svg';
 import RadialEclipse1 from '../../assets/SVG_BG/Ellipse 1.svg';
 import CodeXLogo from '../../assets/SVG_BG/Code X.svg';
@@ -8,13 +8,26 @@ import GroupChatDialog from './GroupChatDialogProps ';
 import { cardData } from '../Chat/allCategoryData/CardData';
 import { Link } from 'react-router-dom';
 
+interface NavItem {
+  id: number | string;
+  name: string;
+  icon: JSX.Element;
+  hasNotification?: boolean;
+}
+
+interface GroupInfo {
+  pic: string;
+  heading: string;
+  description: string;
+}
+
 const ExploreCategory = () => {
-  const [SelectedSection, setSelectedSection] = useState(1);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
-  const [transitioning, setTransitioning] = useState(false);
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const contentRef = useRef(null);
+  const [SelectedSection, setSelectedSection] = useState<number>(1);
+  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 1024);
+  const [transitioning, setTransitioning] = useState<boolean>(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
+  const [selectedGroup, setSelectedGroup] = useState<GroupInfo | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Update isDesktop state on window resize
   const handleResize = () => {
@@ -36,7 +49,7 @@ const ExploreCategory = () => {
     };
   }, []);
 
-  const handleSectionChange = (section) => {
+  const handleSectionChange = (section: number) => {
     setTransitioning(true);
     setTimeout(() => {
       setSelectedSection(section);
@@ -48,7 +61,7 @@ const ExploreCategory = () => {
     setSidebarExpanded(!sidebarExpanded);
   };
 
-  const handleJoinGroup = (groupInfo) => {
+  const handleJoinGroup = (groupInfo: GroupInfo) => {
     setSelectedGroup(groupInfo);
   };
 
@@ -56,22 +69,22 @@ const ExploreCategory = () => {
     setSelectedGroup(null);
   };
 
-  const navItems = [
-    { id: 1, name: 'Explore', icon: <FiCompass className="text-xl" /> },
-    { id: 0, name: 'Your Space', icon: <FiHome className="text-xl" /> },
-    { id: 2, name: 'Bookmarks', icon: <FiBookmark className="text-xl" /> },
-    { id: 3, name: 'Help', icon: <FiHelpCircle className="text-xl" /> },
+  const navItems: NavItem[] = [
+    { id: 1, name: 'Explore', icon: <FiCompass size={20} /> },
+    { id: 0, name: 'Your Space', icon: <FiHome size={20} /> },
+    { id: 2, name: 'Bookmarks', icon: <FiBookmark size={20} /> },
+    { id: 3, name: 'Help', icon: <FiHelpCircle size={20} /> },
   ];
 
   // Moved notifications to top section
-  const topItems = [
-    { id: 'notifications', name: 'Notifications', icon: <FiBell className="text-xl" />, hasNotification: true },
+  const topItems: NavItem[] = [
+    { id: 'notifications', name: 'Notifications', icon: <FiBell size={20} />, hasNotification: true },
   ];
 
   // Remaining profile items
-  const profileItems = [
-    { id: 'profile', name: 'Profile', icon: <FiUser className="text-xl" /> },
-    { id: 'settings', name: 'Settings', icon: <FiSettings className="text-xl" /> },
+  const profileItems: NavItem[] = [
+    { id: 'profile', name: 'Profile', icon: <FiUser size={20} /> },
+    { id: 'settings', name: 'Settings', icon: <FiSettings size={20} /> },
   ];
 
   return (
@@ -98,7 +111,7 @@ const ExploreCategory = () => {
             className='absolute top-6 right-4 w-8 h-8 bg-[#2D1B2F] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#1D4ED8] transition-all duration-300'
             onClick={toggleSidebar}
           >
-            <FiMenu className="text-lg" />
+            <FiMenu size={18} />
           </button>
 
           {/* Logo at top of sidebar */}
@@ -159,7 +172,7 @@ const ExploreCategory = () => {
                   transition-all duration-300
                   group relative
                 `}
-                onClick={() => handleSectionChange(item.id)}
+                onClick={() => handleSectionChange(Number(item.id))}
               >
                 <div className={`${sidebarExpanded ? 'ml-4' : 'mx-auto'} flex items-center justify-center`}>
                   {item.icon}
@@ -235,92 +248,92 @@ const ExploreCategory = () => {
           </div>
         </div>
 
-        {/* Overlay for mobile sidebar */}
-        {sidebarExpanded && !isDesktop && (
-          <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
-            onClick={toggleSidebar}
-          ></div>
-        )}
-
-        {/* Main Content with scrollable area */}
-        <div 
+        {/* Main Content */}
+        <div
           ref={contentRef}
           className={`
-            flex-1 overflow-y-auto
-            transition-all duration-300 ease-in-out
-            ${sidebarExpanded ? 'ml-[240px]' : 'ml-[70px]'}
-            ${!isDesktop && sidebarExpanded ? 'ml-0' : ''}
+            flex-1
+            ${sidebarExpanded ? 'ml-64' : 'ml-20'}
+            transition-all duration-300
+            overflow-y-auto
+            relative
           `}
         >
-          {/* Explore Section with 3 cards per row on desktop */}
-          {SelectedSection === 1 && (
-            <div className={`
-              p-6 h-full
-              ${transitioning ? 'opacity-0' : 'opacity-100'} 
-              transition-opacity duration-300
-            `}>
-              {!selectedGroup ? (
-                <>
-                  {/* Main Section Text Heading */}
-                  <div className='w-full mb-8'>
-                    <h1 className='text-2xl sm:text-3xl md:text-4xl font-extrabold'>
-                      <span><span className='text-[#1D4ED8]'>Your</span> Connection is</span>
-                      <span className='block'>Wonderful with us.</span>
-                    </h1>
-                    <p className='font-light text-sm sm:text-base md:text-lg mt-2'>
-                      <span>Be ready for a new generation — tech </span>
-                      <span>chat that connects you through shared interests.</span>
-                    </p>
-                  </div>
+          {/* Content sections */}
+          <div className="min-h-screen bg-[#1A1A1A]">
+            {/* Explore Section */}
+            {SelectedSection === 1 && (
+              <div className={`
+                p-6 h-full
+                ${transitioning ? 'opacity-0' : 'opacity-100'} 
+                transition-opacity duration-300
+              `}>
+                {!selectedGroup ? (
+                  <>
+                    {/* Main Section Text Heading */}
+                    <div className='w-full mb-8'>
+                      <h1 className='text-2xl sm:text-3xl md:text-4xl font-extrabold'>
+                        <span><span className='text-[#1D4ED8]'>Your</span> Connection is</span>
+                        <span className='block'>Wonderful with us.</span>
+                      </h1>
+                      <p className='font-light text-sm sm:text-base md:text-lg mt-2'>
+                        <span>Be ready for a new generation — tech </span>
+                        <span>chat that connects you through shared interests.</span>
+                      </p>
+                    </div>
 
-                  {/* Cards - 3 per row on desktop */}
-                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                    {cardData.map((val) => (
-                      <GroupCard 
-                        key={val.id} 
-                        pic={val.icon} 
-                        heading={val.title} 
-                        description={val.description}
-                        onJoin={handleJoinGroup}
-                      />
-                    ))}
+                    {/* Cards - 3 per row on desktop */}
+                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+                      {cardData.map((val) => (
+                        <GroupCard 
+                          key={val.id} 
+                          pic={val.icon} 
+                          heading={val.title} 
+                          description={val.description}
+                          onJoin={() => handleJoinGroup({
+                            pic: val.icon,
+                            heading: val.title,
+                            description: val.description
+                          })}
+                        />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="h-full">
+                    <GroupChatDialog 
+                      groupInfo={selectedGroup}
+                      onBack={handleBackFromChat}
+                    />
                   </div>
-                </>
-              ) : (
-                <div className="h-full">
-                  <GroupChatDialog 
-                    groupInfo={selectedGroup}
-                    onBack={handleBackFromChat}
-                  />
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
 
-          {/* Your Space Section */}
-          {SelectedSection === 0 && (
-            <div className={`p-6 ${transitioning ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
-              <h2 className='text-3xl font-bold mb-4'>Your Space</h2>
-              <p className='text-lg'>This is your personal space, where you can relax and explore your content.</p>
-            </div>
-          )}
-          
-          {/* Bookmarks Section */}
-          {SelectedSection === 2 && (
-            <div className={`p-6 ${transitioning ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
-              <h2 className='text-3xl font-bold mb-4'>Bookmarks</h2>
-              <p className='text-lg'>Your saved items appear here for quick access.</p>
-            </div>
-          )}
-          
-          {/* Help Section */}
-          {SelectedSection === 3 && (
-            <div className={`p-6 ${transitioning ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
-              <h2 className='text-3xl font-bold mb-4'>Help Center</h2>
-              <p className='text-lg'>Find assistance and resources to enhance your experience.</p>
-            </div>
-          )}
+            {/* Your Space Section */}
+            {SelectedSection === 0 && (
+              <div className={`p-6 ${transitioning ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+                <h2 className='text-3xl font-bold mb-4'>Your Space</h2>
+                <p className='text-lg'>This is your personal space, where you can relax and explore your content.</p>
+              </div>
+            )}
+            
+            {/* Bookmarks Section */}
+            {SelectedSection === 2 && (
+              <div className={`p-6 ${transitioning ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+                <h2 className='text-3xl font-bold mb-4'>Bookmarks</h2>
+                <p className='text-lg'>Your saved items appear here for quick access.</p>
+              </div>
+            )}
+            
+            {/* Help Section */}
+            {SelectedSection === 3 && (
+              <div className={`p-6 ${transitioning ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+                <h2 className='text-3xl font-bold mb-4'>Help Center</h2>
+                <p className='text-lg'>Find assistance and resources to enhance your experience.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
