@@ -94,7 +94,7 @@ const ExploreCategory = () => {
 
       {/* Main Content Area with Sidebar and Content */}
       <div className='flex flex-1 relative'>
-        {/* Instagram-style fixed sidebar */}
+        {/* Sidebar */}
         <div 
           className={`
             ${sidebarExpanded ? 'w-[240px]' : 'w-[70px]'}

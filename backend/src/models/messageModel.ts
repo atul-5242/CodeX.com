@@ -3,16 +3,16 @@ import mongoose, { Schema, model } from "mongoose";
 const MessageSchema = new Schema(
     {
         from: {
-            type: mongoose.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
         to: {
-            type: mongoose.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User",
         },
         groupId: {
-            type: mongoose.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Group",
         },
         message: {
@@ -24,7 +24,31 @@ const MessageSchema = new Schema(
             enum: ["direct", "group"],
             required: true,
         },
+        messageType: {
+            type: String,
+            enum: ["text", "image", "file", "audio", "video"],
+            default: "text"
+        },
+        isEdited: {
+            type: Boolean,
+            default: false
+        },
+        readBy: [{
+            userId: {
+                type: Schema.Types.ObjectId,
+                ref: "User"
+            },
+            readAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
+        replyTo: {
+            type: Schema.Types.ObjectId,
+            ref: "Message"
+        }
     },
     { timestamps: true }
 );
+
 export const Message = model("Message", MessageSchema);

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login } from "../../controller/Auth/login";
 import { signIn } from "../../controller/Auth/signIn";
-import { userMiddleware } from "../../middleware/auth";
+import { authenticateToken } from "../../middleware/auth";
 
 const authRoutes = Router();
 //@ts-ignore

@@ -5,7 +5,6 @@ import bcrpyt from "bcrypt";
 export const login = async (req:Request,res:Response) =>{
     let username:string = req.body.username;
     let password:string = req.body.password;
-
     try {
         
         const userData=await User.findOne({username:username})

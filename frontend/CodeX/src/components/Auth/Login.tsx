@@ -134,7 +134,7 @@ const Login = () => {
                   Forgot Password?
                 </Link>
                 <Link 
-                  to="/signup"
+                  to="/signin"
                   className="text-sm text-violet-400 hover:text-violet-300 transition duration-200"
                 >
                   Create Account

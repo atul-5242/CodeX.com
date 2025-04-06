@@ -1,4 +1,5 @@
 import mongoose , { Schema,model } from "mongoose";
+
 const GroupSchema = new Schema({
     groupName: {
         type: String,
@@ -11,21 +12,14 @@ const GroupSchema = new Schema({
     description: {
         type: String,
     },
-    members: [
-        {
-            userId: {
-                type: mongoose.Types.ObjectId,
-                ref: "User",
-                required: true,
-            },
-        },
-    ],
-    messages: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Message",
-        },
-    ],
+    members: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    }],
+    messages: [{
+        type: Schema.Types.ObjectId,
+        ref: "Message",
+    }],
 });
 
 export const Group = model("Group", GroupSchema);

@@ -1,7 +1,5 @@
 import { Router } from "express";
 import { getAllMessagesByID, sendMessage } from "../controller/chatController";
-// import { userMiddleware } from "../middleware/auth";
-import { addMembers, createGroup } from "../controller/GroupController/GroupControl";
 
 const ChatRoute = Router();
 
@@ -13,24 +11,8 @@ ChatRoute.post("/sendMessage",(req,res,next)=>{
         next(error);
     }
 });
-ChatRoute.post("/createGroup", (req,res,next)=>{
-    try {
-        console.log("Hii there....................................................");
-        createGroup(req, res);
-    } catch (error) {
-        next(error);
-    }
-});
-ChatRoute.post("/addMembers_", (req,res,next)=>{
-    try {
-        console.log("Hii there....................................................");
-        addMembers(req, res);
-    } catch (error) {
-        next(error);    
-    }
-});
+
 ChatRoute.post("/getChatById", (req,res)=>{  
-        console.log("Hii there....................................................");
         getAllMessagesByID(req, res);
 }); 
 

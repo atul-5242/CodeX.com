@@ -3,7 +3,7 @@ import { approveRequest, getAllUserInConnection, rejectRequest, sendRequest } fr
 
 const RequestHandleRoute = Router();
 
-RequestHandleRoute.post("/sent-req", async (req: Request, res: Response) => {
+RequestHandleRoute.post("/sent-request", async (req: Request, res: Response) => {
   try {
     await sendRequest(req, res);  
   } catch (error) {
